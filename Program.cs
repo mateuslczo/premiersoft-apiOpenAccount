@@ -1,4 +1,7 @@
 
+using BankMore.Infrastructure.Security;
+using BankMore.OpenAccount.Api.Interfaces;
+
 namespace BankMore.OpenAccount
 {
 	public class Program
@@ -13,6 +16,17 @@ namespace BankMore.OpenAccount
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+
+			builder.Services.AddHttpContextAccessor();
+
+			builder.Services.AddSingleton<ITokenService, TokenService>();
+
+			builder.Services.AddHttpClient<IAccountRegistrationService, AccountRegistrationService>((provider, client) =>
+			{
+				var configuration = provider.GetRequiredService<IConfiguration>();
+				client.BaseAddress = new Uri(configuration["AccountApiSettings:BaseUrl"]);
+				client.DefaultRequestHeaders.Add("Accept", "application/json");
+			});
 
 			var app = builder.Build();
 
