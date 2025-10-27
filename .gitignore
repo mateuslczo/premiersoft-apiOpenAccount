@@ -1,0 +1,58 @@
+﻿# Build results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+
+# VS Code
+.vscode/
+
+# Runtime files
+appsettings.Development.json
+appsettings.local.json
+
+# Dependencies
+**/node_modules/
+[Dd]ebug/
+[Rr]elease/
+
+# Azure
+[Aa]zure/
+
+# Logs
+*.log
+*_backup.html
+
+# Database
+*.mdf
+*.ldf
+*.ndf
+
+# NuGet
+*.nupkg
+**/packages/
+
+# Docker
+.dockerignore
+Dockerfile.local
+
+# MacOS
+.DS_Store
+
+# Rider
+.idea/
+
+# Temp files
+*.tmp
+*.temp
+
+# SonarQube
+.sonar/
+.target/sonar/
+build/sonar/
+*.sonar.tmp
+sonar-report.*
