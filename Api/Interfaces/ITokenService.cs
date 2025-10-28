@@ -3,6 +3,7 @@
 
 	public interface ITokenService
 	{
-		string GenerateToken(string userId, string userPassword, string role);
+		string GenerateToken(string userId, string userPassword, string role); 
+		bool ValidateToken(string token);
 	}
 }

@@ -72,5 +72,48 @@ namespace BankMore.Infrastructure.Security
 					ex);
 			}
 		}
+
+
+		public bool ValidateToken(string token)
+		{
+			try
+			{
+				var secretKey = _configuration["Jwt:Key"];
+				var issuer = _configuration["Jwt:Issuer"];
+				var audience = _configuration["Jwt:Audience"];
+
+				if (string.IsNullOrWhiteSpace(secretKey))
+					throw new SecurityKeyException("A chave JWT não foi configurada.");
+
+				var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+				var tokenHandler = new JwtSecurityTokenHandler();
+
+				tokenHandler.ValidateToken(token, new TokenValidationParameters
+				{
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidIssuer = issuer,
+					ValidAudience = audience,
+					IssuerSigningKey = key,
+					ClockSkew = TimeSpan.Zero // evita tolerância de tempo extra
+				}, out SecurityToken validatedToken);
+
+				return true;
+			}
+			catch (SecurityTokenExpiredException)
+			{
+				// Token expirou
+				return false;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
 	}
+
 }

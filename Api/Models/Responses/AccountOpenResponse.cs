@@ -1,6 +1,6 @@
 ﻿namespace BankMore.OpenAccount.Api.Models.Responses
 {
-	public class CreateAccountResponse
+	public class AccountOpenResponse
 	{
 		public bool Success { get; set; }
 		public string Message { get; set; }
