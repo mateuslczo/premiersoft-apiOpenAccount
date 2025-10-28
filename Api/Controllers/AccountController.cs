@@ -2,7 +2,6 @@
 using BankMore.OpenAccount.Api.Interfaces;
 using BankMore.OpenAccount.Api.Models.Requests;
 using BankMore.OpenAccount.Api.Validators.Exceptions;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
