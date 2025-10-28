@@ -1,6 +1,9 @@
 
 using BankMore.Infrastructure.Security;
 using BankMore.OpenAccount.Api.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BankMore.OpenAccount
 {
@@ -21,12 +24,27 @@ namespace BankMore.OpenAccount
 
 			builder.Services.AddSingleton<ITokenService, TokenService>();
 
-			builder.Services.AddHttpClient<IAccountRegistrationService, AccountRegistrationService>((provider, client) =>
+			builder.Services.AddHttpClient<IAccountCurrentService, AccountCurrentService>((provider, client) =>
 			{
 				var configuration = provider.GetRequiredService<IConfiguration>();
 				client.BaseAddress = new Uri(configuration["AccountApiSettings:BaseUrl"]);
 				client.DefaultRequestHeaders.Add("Accept", "application/json");
 			});
+
+			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+	.AddJwtBearer(options =>
+	{
+		options.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateIssuer = true,
+			ValidateAudience = true,
+			ValidateLifetime = true,
+			ValidateIssuerSigningKey = true,
+			ValidIssuer = builder.Configuration["Jwt:Issuer"],
+			ValidAudience = builder.Configuration["Jwt:Audience"],
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+		};
+	});
 
 			var app = builder.Build();
 

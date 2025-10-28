@@ -1,6 +1,6 @@
 ﻿namespace BankMore.OpenAccount.Api.Models.Requests
 {
-	public class OpenAccountRequest
+	public class AccountOpenRequest
 	{
 		public Guid IdContaCorrente { get; set; }
 		public string Nome { get; set; }

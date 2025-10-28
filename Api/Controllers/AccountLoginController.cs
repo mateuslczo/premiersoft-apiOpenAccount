@@ -8,23 +8,23 @@ namespace BankMore.OpenAccount.API.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public class AccountRegistrationController :ControllerBase
+	public class AccountLoginController :ControllerBase
 	{
 
-		private readonly IAccountRegistrationService _service;
+		private readonly IAccountLoginService _service;
 
-		public AccountRegistrationController(IAccountRegistrationService service)
+		public AccountLoginController(IAccountLoginService service)
 		{
 			_service = service;
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Register([FromBody] OpenAccountRequest request)
+		public async Task<IActionResult> Login([FromBody] AccountLoginRequest request)
 		{
 			try
 			{
 
-				var result = await _service.RegisterAsync(request);
+				var result = await _service.LoginAccountAsync(request);
 
 				if (!result.Success)
 					return BadRequest(new { message = result.Message, type = "INVALID_DOCUMENT" });
