@@ -56,3 +56,9 @@ Dockerfile.local
 build/sonar/
 *.sonar.tmp
 sonar-report.*
+
+# Output da documentação
+docs/_site/
+
+# Arquivos YAML da API gerados automaticamente
+docs/api/
