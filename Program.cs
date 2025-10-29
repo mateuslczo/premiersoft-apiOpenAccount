@@ -1,8 +1,14 @@
 
 using BankMore.Infrastructure.Security;
 using BankMore.OpenAccount.Api.Interfaces;
+using BankMore.OpenAccount.Api.Services;
+using BankMore.OpenAccount.Api.Services.EndpointsFactory;
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace BankMore.OpenAccount
@@ -23,12 +29,43 @@ namespace BankMore.OpenAccount
 			builder.Services.AddHttpContextAccessor();
 
 			builder.Services.AddSingleton<ITokenService, TokenService>();
+			builder.Services.AddTransient<TokenStoreHandler>();
 
-			builder.Services.AddHttpClient<IAccountCurrentService, AccountCurrentService>((provider, client) =>
+			builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("AccountApiSettings"));
+
+			// HttpClient Config
+			builder.Services.AddHttpClient("HttpClientApi", (provider, client) =>
 			{
+
+				var apiSettings = builder.Configuration.GetSection("ApiSettings").Get<ApiSettings>();
 				var configuration = provider.GetRequiredService<IConfiguration>();
 				client.BaseAddress = new Uri(configuration["AccountApiSettings:BaseUrl"]);
 				client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+
+			}).AddHttpMessageHandler<TokenStoreHandler>();
+
+			builder.Services.AddScoped<IAccountLoginService>(provider =>
+			{
+				var factory = provider.GetRequiredService<IHttpClientFactory>();
+				var httpClient = factory.CreateClient("HttpClientApi");
+
+				var tokenService = provider.GetRequiredService<ITokenService>();
+				var logger = provider.GetRequiredService<ILogger<AccountLoginService>>();
+				var iOptions = provider.GetRequiredService<IOptions<ApiSettings>>();
+
+				return new AccountLoginService(httpClient, tokenService, logger, iOptions);
+			});
+
+			builder.Services.AddScoped<IAccountCurrentService>(provider =>
+			{
+				var factory = provider.GetRequiredService<IHttpClientFactory>();
+				var httpClient = factory.CreateClient("HttpClientApi");
+
+				var tokenService = provider.GetRequiredService<ITokenService>();
+				var logger = provider.GetRequiredService<ILogger<AccountCurrentService>>();
+				var iOptions = provider.GetRequiredService<IOptions<ApiSettings>>();
+				return new AccountCurrentService(httpClient, tokenService, logger, iOptions);
 			});
 
 			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

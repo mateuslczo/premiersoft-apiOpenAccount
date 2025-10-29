@@ -1,6 +1,4 @@
-﻿using BankMore.OpenAccount.Api.Validators.Exceptions;
-
-namespace BankMore.OpenAccount.Api.Validators.Exceptions
+﻿namespace BankMore.OpenAccount.Api.Validators.Exceptions
 {
 
 	public class SecurityKeyException :CustomExceptions

@@ -4,7 +4,7 @@ namespace BankMore.OpenAccount.Api.Interfaces
 {
 	public interface IAccountLoginService
 	{
-		Task<(bool Success, string Message, Guid? AccountId, string Token)> LoginAccountAsync(AccountLoginRequest request);
+		Task<(bool Success, string Message, int? AccountId, string Token)> LoginAccountAsync(AccountLoginRequest request);
 
 	}
 }

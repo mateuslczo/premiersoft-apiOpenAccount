@@ -11,6 +11,12 @@ namespace BankMore.Infrastructure.Security
 	{
 		private readonly IConfiguration _configuration;
 
+		public string? Token { get; private set; }
+
+		public string? GetToken() => Token;
+
+		public void SetToken(string token) => Token = token;
+
 		public TokenService(IConfiguration configuration)
 		{
 			_configuration = configuration;
