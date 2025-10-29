@@ -29,11 +29,18 @@ namespace BankMore.OpenAccount.API.Controllers
 				if (!result.Success)
 					return BadRequest(new { message = result.Message, type = "INVALID_DOCUMENT" });
 
-				return Ok(result);
+				var response = new
+				{
+					success = true,
+					message = "Login realizado com sucesso",
+					token = result.Token,
+
+				};
+				return Ok(response);
 			}
 			catch (CustomExceptions ex)
 			{
-				return ex.ToActionResult(); 
+				return ex.ToActionResult();
 			}
 
 		}

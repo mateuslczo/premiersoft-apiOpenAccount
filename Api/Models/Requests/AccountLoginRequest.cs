@@ -2,9 +2,9 @@
 {
 	public class AccountLoginRequest
 	{
-		public Guid IdContaCorrente { get; set; }
-		public string Cpf { get; set; }
-		public string Senha { get; set; }
+		public int IdContaCorrente { get; set; }
+		public string Cpf { get; set; } = "91985494051";
+		public string Senha { get; set; } = "12345";
 
 	}
 }

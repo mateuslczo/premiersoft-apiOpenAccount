@@ -1,0 +1,32 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../",
+          "files": [ "**/*.csproj" ]
+        }
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [ "index.md", "toc.yml" ]
+      },
+      {
+        "files": [ "articles/**.md" ]
+      },
+      {
+        "files": [ "api/**.yml" ]
+      }
+    ],
+    "globalMetadata": {
+      "_appTitle": "BankMore.OpenAccount",
+      "_enableSearch": true,
+      "_appFooter": "© 2025 BankMore"
+    },
+    "dest": "_site"
+  }
+}

@@ -5,7 +5,7 @@
 	/// </summary>
 	public class AccountDeactivateRequest
 	{
-		public Guid IdContaCorrente { get; set; }
+		public int IdContaCorrente { get; set; }
 		public string Cpf { get; set; }
 		public string Senha { get; set; }
 	}
